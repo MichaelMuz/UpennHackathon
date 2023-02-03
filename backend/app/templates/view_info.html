@@ -1,0 +1,33 @@
+<table style="width:50%">
+    <thead>
+      <tr>
+        <th>Question</th>
+        <th>Answer</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for question, answer in questions_answers %}
+      <tr>
+        <td>{{ question }}</td>
+        <td>{{ answer }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <br>
+  <br>
+  <table>
+    <thead>
+      <tr>
+        <th>Topics</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for topic in topics %}
+      <tr>
+        <td>{{ topic }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  

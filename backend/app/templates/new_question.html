@@ -1,37 +1,66 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <title>Question and Topic Submission</title>
+    </head>
+    <body>
+        <h1>Question and Topic Submission</h1>
+        <form action="" method="post">
+            <h3>Questions:</h3>
+            <div id="question_container">
+                <div class="question">
+                    <label for="question_1">Question 1:</label>
+                    <input type="text" id="question_1" name="question[]">
+                    <br><br>
+                    <label for="answer_1">Answer 1:</label>
+                    <input type="text" id="answer_1" name="answer[]">
+                    <br><br>
+                </div>
+            </div>
+            <button type="button" onclick="addQuestion()">Add Question</button>
+            <br><br>
+            <h3>Topics:</h3>
+            <div id="topic_container">
+                <div class="topic">
+                    <label for="topic_1">Topic 1:</label>
+                    <input type="text" id="topic_1" name="topic[]">
+                    <br><br>
+                </div>
+            </div>
+            <button type="button" onclick="addTopic()">Add Topic</button>
+            <br><br>
+            <input type="submit" value="Submit">
+        </form>
+        <script>
+            let questionCounter = 1;
+            let topicCounter = 1;
 
-<head>
-	<title>
-		Question Centre (British)
-	</title>
-</head>
+            function addQuestion() {
+                questionCounter++;
+                let questionDiv = document.createElement("div");
+                questionDiv.className = "question";
+                questionDiv.innerHTML = `
+                    <label for="question_${questionCounter}">Question ${questionCounter}:</label>
+                    <input type="text" id="question_${questionCounter}" name="question[]">
+                    <br><br>
+                    <label for="answer_${questionCounter}">Answer ${questionCounter}:</label>
+                    <input type="text" id="answer_${questionCounter}" name="answer[]">
+                    <br><br>
+                `;
+                document.getElementById("question_container").appendChild(questionDiv);
+            }
 
-<body style="text-align:center;">
-
-	<h1 style="color:green;">Welcome user {{user_id}}</h1>
-
-	<h3> Enter your question and answer </h3>
-	
-    <form action="" method="POST">
-		
-		Question: <input type="text" name="question"
-							placeholder="Question">
-
-		<br><br>
-		Answer: <input type="text" name="answer"
-							placeholder="Answer">
-		<br><br>
-        <!--<input type="hidden" id="user_id" name="userid" value="{{user_id}}">-->
-		
-		<input type="submit" value="Submit">
-		
-	</form>
-
-	<p>
-		By clicking the submit button the Entered<br>
-		details will be sent to "/action_page.php"
-	</p>
-</body>
-
-</html>					
+            function addTopic() {
+                topicCounter++;
+                let topicDiv = document.createElement("div");
+                topicDiv.className = "topic";
+                topicDiv.innerHTML = `
+                    <label for="topic_${topicCounter}">Topic ${topicCounter}:</label>
+                    <input type="text" id="topic_${topicCounter}" name="topic[]">
+                    <br><br>
+                `;
+                document.getElementById("topic_container").appendChild(topicDiv);
+            }
+        </script>
+    </body>
+</html>

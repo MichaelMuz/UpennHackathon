@@ -1,7 +1,7 @@
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { BraveWalletAdapter, ExodusWalletAdapter, MathWalletAdapter, PhantomWalletAdapter, SkyWalletAdapter, SlopeWalletAdapter, UnsafeBurnerWalletAdapter } from '@solana/wallet-adapter-wallets';
+import { BraveWalletAdapter, ExodusWalletAdapter, MathWalletAdapter, PhantomWalletAdapter, SlopeWalletAdapter, UnsafeBurnerWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
 import React, { FC, ReactNode, useMemo } from 'react';
 
@@ -9,6 +9,7 @@ require('./App.css');
 require('@solana/wallet-adapter-react-ui/styles.css');
 
 const App: FC = () => {
+    console.log("im in APP")
     return (
         <Context>
             <Content />
@@ -18,6 +19,7 @@ const App: FC = () => {
 export default App;
 
 const Context: FC<{ children: ReactNode }> = ({ children }) => {
+    console.log("in context")
     // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
     const network = WalletAdapterNetwork.Devnet;
 
@@ -48,14 +50,20 @@ const Context: FC<{ children: ReactNode }> = ({ children }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [network]
     );
-
-    return (
+    console.log("about to log important stuff")
+    console.log(endpoint)
+    console.log(wallets)
+    console.log(children)
+    const to_return = (
         <ConnectionProvider endpoint={endpoint}>
             <WalletProvider wallets={wallets} autoConnect>
                 <WalletModalProvider>{children}</WalletModalProvider>
             </WalletProvider>
         </ConnectionProvider>
     );
+    console.log("returning:")
+    console.log(to_return)
+    return to_return
 };
 
 const Content: FC = () => {

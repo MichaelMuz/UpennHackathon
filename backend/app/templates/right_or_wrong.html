@@ -1,0 +1,12 @@
+<h2>{{ question }}</h2>
+
+<form action="/check_answer" method="post">
+  <input type="text" name="user_answer">
+  <input type="submit" value="Submit">
+</form>
+
+{% if result == "Correct" %}
+  <p style="color: green;">Correct</p>
+{% elif result == "Incorrect" %}
+  <p style="color: red;">Incorrect. The correct answer is: {{ correct_answer }}</p>
+{% endif %}

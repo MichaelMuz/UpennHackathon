@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>
+		Question Centre (British)
+	</title>
+</head>
+
+<body style="text-align:center;">
+
+	<h1 style="color:green;">Welcome user {{user_id}}</h1>
+
+	<h3> Enter your question and answer </h3>
+	
+    <form action="" method="POST">
+		
+		Question: <input type="text" name="question"
+							placeholder="Question">
+
+		<br><br>
+		Answer: <input type="text" name="answer"
+							placeholder="Answer">
+		<br><br>
+        <!--<input type="hidden" id="user_id" name="userid" value="{{user_id}}">-->
+		
+		<input type="submit" value="Submit">
+		
+	</form>
+
+	<p>
+		By clicking the submit button the Entered<br>
+		details will be sent to "/action_page.php"
+	</p>
+</body>
+
+</html>					

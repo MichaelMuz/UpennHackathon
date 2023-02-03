@@ -11,6 +11,8 @@ def gpt_req(prompt):
         frequency_penalty=0,
         presence_penalty=0
     )
-    return response.choices[0].text
+    cleaned = response.choices[0].text.strip()
+    if(len(cleaned) == 0):
+        return "Got empty big bruh"
+    return cleaned
 
-print(gpt_req("what color are my balls?"))

@@ -22,14 +22,26 @@ class Datalayer:
             return []
 
     # Retrieve all of the questions that a user has asked
-    def get_user_questions_and_answers(user_id):
+    def get_user_questions_and_answers(user_id, give_qid=False):
         user = db.session.query(User).filter_by(user_id=user_id).first()
         if(not user):
             return []
         q_and_a = []
+        if(give_qid):
+            for q in user.questions:
+                q_and_a.append((q.question, q.answer, q.id))
+            return q_and_a
+
         for q in user.questions:
             q_and_a.append((q.question, q.answer))
+        
         return q_and_a
+
+    def get_question_by_id(question_id):
+        question = db.session.query(Question).filter_by(id=question_id).first()
+        return (question.question, question.answer)
+        
+        
 
     def add_new_questions(user_id, questions_answers):
         

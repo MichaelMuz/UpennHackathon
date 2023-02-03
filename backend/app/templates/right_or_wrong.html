@@ -1,12 +1,12 @@
+
 <h2>{{ question }}</h2>
-
-<form action="/check_answer" method="post">
-  <input type="text" name="user_answer">
-  <input type="submit" value="Submit">
-</form>
-
-{% if result == "Correct" %}
+<h3>Your answer was: {{user_answer}}</h3>
+{% if is_correct == True %}
   <p style="color: green;">Correct</p>
-{% elif result == "Incorrect" %}
-  <p style="color: red;">Incorrect. The correct answer is: {{ correct_answer }}</p>
+{% elif is_correct == False %}
+  <p style="color: red;">Incorrect. </p>
 {% endif %}
+<h4>Our answer: {{correct_answer}}</h4>
+<form method="get">
+  <button type="submit">Ask Another Question</button>
+</form>

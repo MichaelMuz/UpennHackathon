@@ -46,7 +46,7 @@ def ask_question(user_id):
         question_to_ask = question_triple[0]
         question_id = question_triple[2]
         
-    
+    print(f"aking question with: {question_to_ask=}, {question_id=}")
     return render_template("ask_question.html", question=question_to_ask, question_id=question_id)
 
 @app.route("/ask_question/<user_id>", methods = ["POST"])
@@ -77,7 +77,7 @@ def check_answer(user_id):
         else:
             raise Exception(f"GPT responded with {gpt_eval} instead of yes or no")
         
-
+    print(f"checking correctness with: {true_answer=}, user's {answer=}, {question=}, {is_correct=}")
     return render_template("right_or_wrong.html", correct_answer=true_answer, user_answer=answer, question=question, is_correct=is_correct)
 
 

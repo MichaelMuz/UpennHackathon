@@ -2,11 +2,9 @@ from app import db, User, Topic, Question
 
 
 class Datalayer:
-    def get_user(user_id):
-        return db.session.query(User).filter_by(user_id=user_id).first()
 
     def get_user_sessions(user_id):
-        user = get_user(user_id)
+        user = db.session.query(User).filter_by(user_id=user_id).first()
         return [ses for ses in user.sessions]
 
     def get_session_details(user_id):
@@ -14,7 +12,7 @@ class Datalayer:
         topics = db.session.query(Topic).filter_by(session_id=session_id)
         q_a = db.session.query(Topic).filter_by(session_id=session_id)
         to_ret = {
-            "questions" : [(i.question, i.answer) for i in q_a]
+            "questions" : [(i.question, i.answer) for i in q_a],
             "topics" : [i.topic for i in topics]
         }
         return to_ret

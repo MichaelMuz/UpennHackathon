@@ -3,7 +3,7 @@ from flask import render_template, request
 from app.datalayer import Datalayer
 from app.gpt_talker import gpt_req
 import random
-from Flask import jsonify
+from flask import jsonify
 
 
 #get existing user study sessions
@@ -12,7 +12,7 @@ def get_study_sessions_from_user(): #GET all the sessions
     user_id = 1
     sessions = Datalayer.get_user_sessions(user_id)
     session_dict = {
-        "user_id": user_id
+        "user_id": user_id,
         "sessions": [
         ]
     }
@@ -34,7 +34,7 @@ def get_session_info(session_id):
                 # "question": "",
                 # "answer": ""
             #}
-        ]
+        ],
         "topics": [topic for topic in details["topics"]]
     }
     for quest, ans in details["questions"]:
@@ -75,7 +75,7 @@ def ask_question(session_name):
     return jsonify(to_ret)
 
 #post the user's answers and receive the answer
-@app.route('/answer_question', methods = ["POST"]):
+@app.route('/answer_question', methods = ["POST"])
 def answer_question():
     question = request.form["question"]
     answer = request.form["answer"]
@@ -106,14 +106,14 @@ def answer_question():
     to_ret = {
         "question": question,
         "user_answer": answer,
-        "is_correct": is_correct
+        "is_correct": is_correct,
         "true_answer": true_answer
         
     }
     return jsonify(to_ret)
 
 #post the user's pics
-@app.route('/view_pictures', methods = ["GET"]): #assuming userid = 1
+@app.route('/view_pictures', methods = ["GET"]) #assuming userid = 1
 def view_pictures():
     pass
 

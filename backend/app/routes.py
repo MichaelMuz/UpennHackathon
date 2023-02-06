@@ -3,55 +3,80 @@ from flask import render_template, request
 from app.datalayer import Datalayer
 from app.gpt_talker import gpt_req
 import random
+from Flask import jsonify
 
-@app.route("/")
-def index():
-    return "welcome to Joe's crab shack"
 
-@app.route("/new_question/<user_id>", methods = ["GET"])
-def new_question_input_boxes(user_id):
-    print(f"{user_id=}")
-    return render_template("new_question.html", user_id=user_id)
+#get existing user study sessions
+@app.route('/get_sessions', methods = ["GET"]) #assuming user_id is 1
+def get_study_sessions_from_user(): #GET all the sessions
+    user_id = 1
+    sessions = Datalayer.get_user_sessions(user_id)
+    session_dict = {
+        "user_id": user_id
+        "sessions": [
+        ]
+    }
+    for sess in sessions:
+        session_dict["sessions"].append({"name" : sess.name})
 
-@app.route("/new_question/<user_id>", methods = ["POST"])
-def enter_new_questions(user_id):
-    questions = request.form.getlist('question[]')
-    answers = request.form.getlist('answer[]')
-    topics = request.form.getlist('topic[]')
-    if(Datalayer.does_user_exist(user_id)):
-        Datalayer.add_new_questions(user_id, list(zip(questions, answers)))
-        Datalayer.add_new_topics(user_id, topics)
-        all_qa = Datalayer.get_user_questions_and_answers(user_id)
-        all_topics = Datalayer.get_user_topics(user_id)
-        return render_template("view_info.html", questions_answers=all_qa, topics=all_topics)
-    return "Bruh who is you"
+    return jsonify(sessions_dict)
 
-@app.route("/ask_question/<user_id>", methods = ["GET"])
-def ask_question(user_id):
+
+
+#return everything about session with session_name = session_name
+@app.route('/session_info/<session_name>', methods = ["GET"])
+def get_session_info(session_id):
+    user_id = 1
+    details = Datalayer.get_session_details(user_id)
+    to_json = {
+        "questions" : [
+            #{
+                # "question": "",
+                # "answer": ""
+            #}
+        ]
+        "topics": [topic for topic in details["topics"]]
+    }
+    for quest, ans in details["questions"]:
+        inner = {
+            "question" : quest,
+            "answer" : ans
+            }
+        to_json["questions"].append(inner)
+
+    return jsonify(to_json)
+
+   
+    
+
+#edit a session if session name exists, if it does not then a new session will be created
+@app.route('/edit_create_session', methods = ["POST"])
+def edit_study_session(): #POST session changes
+    pass        
+
+#will get a question
+@app.route('/ask_question/<session_name>', methods = ["GET"])
+def ask_question(session_name):
+    question_to_ask = None
     topic_not_question = True
     if(random.randint(0, 1) == 0):
         topic_not_question = False
 
-    question_to_ask = None
-    question_id = -1
-
     if(topic_not_question):
-        topics = Datalayer.get_user_topics(user_id)
-        chosen_topic = random.choice(topics)
-        question_to_ask = gpt_req(f"ask me a question about {chosen_topic}")
-       
+        question_to_ask = Datalayer.get_random_topic(session_name)
     else:
-        questions = Datalayer.get_user_questions_and_answers(user_id, give_qid=True)
-        question_triple = random.choice(questions)
-        question_to_ask = question_triple[0]
-        question_id = question_triple[2]
+        question_to_ask = Datalayer.get_random_question(session_name)
         
-    print(f"aking question with: {question_to_ask=}, {question_id=}")
-    return render_template("ask_question.html", question=question_to_ask, question_id=question_id)
+        
+    to_ret = {
+        "question" : question_to_ask
+    }
 
-@app.route("/ask_question/<user_id>", methods = ["POST"])
-def check_answer(user_id):
-    question_id = int(request.form["questionId"])
+    return jsonify(to_ret)
+
+#post the user's answers and receive the answer
+@app.route('/answer_question', methods = ["POST"]):
+def answer_question():
     question = request.form["question"]
     answer = request.form["answer"]
     print(f"in check answer {question_id=}, {question=}, {answer=}")
@@ -78,7 +103,25 @@ def check_answer(user_id):
             raise Exception(f"GPT responded with {gpt_eval} instead of yes or no")
         
     print(f"checking correctness with: {true_answer=}, user's {answer=}, {question=}, {is_correct=}")
-    return render_template("right_or_wrong.html", correct_answer=true_answer, user_answer=answer, question=question, is_correct=is_correct)
+    to_ret = {
+        "question": question,
+        "user_answer": answer,
+        "is_correct": is_correct
+        "true_answer": true_answer
+        
+    }
+    return jsonify(to_ret)
+
+#post the user's pics
+@app.route('/view_pictures', methods = ["GET"]): #assuming userid = 1
+def view_pictures():
+    pass
+
+
+
+
+
+    
 
 
 

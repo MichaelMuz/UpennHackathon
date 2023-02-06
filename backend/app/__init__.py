@@ -14,20 +14,30 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.String(255), unique=True, nullable=False)
     #topics = db.relationship('Topic', secondary='user_topics', backref=db.backref('users', lazy=True))
-    topics = db.relationship('Topic', backref='user', lazy=True)
-    questions = db.relationship('Question', backref='user', lazy=True)
+    #topics = db.relationship('Topic', backref='user', lazy=True)
+    #questions = db.relationship('Question', backref='user', lazy=True)
+    study_sessions = db.relationship('StudySession', backref='user', lazy=True)
+
+class StudySession:
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    name = db.Column(db.String(255), unique=True, nullable=False)
+    topics = db.relationship('Topic', backref='StudySession', lazy=True)
+    questions = db.relationship('Question', backref='StudySession', lazy=True)
 
 class Topic(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     topic = db.Column(db.String(255), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    session_id = db.Column(db.Integer, db.ForeignKey('studysession.id'), nullable=False)
 
 
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.String(255), nullable=False)
     answer = db.Column(db.String(255), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    session_id = db.Column(db.Integer, db.ForeignKey('studysession.id'), nullable=False)
+
+
 
 # class Topic(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)

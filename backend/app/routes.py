@@ -19,15 +19,15 @@ def get_study_sessions_from_user(): #GET all the sessions
     for sess in sessions:
         session_dict["sessions"].append({"name" : sess.name})
 
-    return jsonify(sessions_dict)
+    return jsonify(session_dict)
 
 
 
 #return everything about session with session_name = session_name
 @app.route('/session_info/<session_name>', methods = ["GET"])
-def get_session_info(session_id):
+def get_session_info(session_name):
     user_id = 1
-    details = Datalayer.get_session_details(user_id)
+    details = Datalayer.get_session_details(user_id, session_name)
     to_json = {
         "questions" : [
             #{
@@ -52,7 +52,28 @@ def get_session_info(session_id):
 #edit a session if session name exists, if it does not then a new session will be created
 @app.route('/edit_create_session', methods = ["POST"])
 def edit_study_session(): #POST session changes
-    pass        
+    user_id = 1
+    changes = request.json
+    
+    session_name = changes["session_name"]
+    session_id = Datalayer.get_session_id(user_id, session_name)
+    if(session_id != None and len(changes["questions"]) == 0 and len(changes["topics"]) == 0):
+        Datalayer.delete_session(user_id, session_name)
+    elif(session_id == None):
+        session_id = Datalayer.create_session(user_id=user_id, session_name=session_name)
+
+    questions_json = changes["questions"]
+    for q in questions_json:
+        question = q["question"]
+        answer = q["answer"]
+        Datalayer.edit_question(session_id, question, answer)
+    
+    for topic in changes["topics"]:
+        Datalayer.edit_topic(session_id, topic)
+        
+    return jsonify({"message" : "success"})
+    
+
 
 #will get a question
 @app.route('/ask_question/<session_name>', methods = ["GET"])

@@ -16,12 +16,8 @@ def get_study_sessions_from_user(): #GET all the sessions
     sessions = Datalayer.get_user_sessions(user_id)
     session_dict = {
         "user_id": user_id,
-        "sessions": [
-        ]
+        "sessions": [sess.name for sess in sessions]
     }
-    for sess in sessions:
-        session_dict["sessions"].append({"name" : sess.name})
-
     return jsonify(session_dict)
 
 

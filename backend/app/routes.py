@@ -5,6 +5,9 @@ from app.gpt_talker import gpt_req
 import random
 from flask import jsonify
 
+@app.route('/')
+def index():
+    return "welcome"
 
 #get existing user study sessions
 @app.route('/get_sessions', methods = ["GET"]) #assuming user_id is 1

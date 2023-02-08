@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, request
 from app.datalayer import Datalayer
-from app.gpt_talker import gpt_req
+from app.ai_layer import gpt_req, dalle_req
 import random
 from flask import jsonify
 
@@ -135,7 +135,7 @@ def answer_question():
 #post the user's pics
 @app.route('/view_pictures', methods = ["GET"]) #assuming userid = 1
 def view_pictures():
-    pass
+    return dalle_req("pretty flamingo")
 
 
 

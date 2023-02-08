@@ -16,3 +16,11 @@ def gpt_req(prompt):
         return "Got empty big bruh"
     return cleaned
 
+def dalle_req(prompt):
+    response = openai.Image.create(
+        prompt=prompt,
+        n=1,
+        size="1024x1024"
+    )
+    image_url = response['data'][0]['url']
+    return image_url

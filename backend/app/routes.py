@@ -141,7 +141,7 @@ def answer_question():
 #post the user's pics
 @app.route('/view_pictures', methods = ["GET"]) #assuming userid = 1
 def view_pictures():
-    return dalle_req("pretty flamingo")
+    return jsonify({"url": dalle_req("pretty flamingo")})
 
 
 

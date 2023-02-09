@@ -16,6 +16,18 @@ def gpt_req(prompt):
         return "Got empty big bruh"
     return cleaned
 
+DALLE_PROMPTS = {
+    1: "Childish Drawing of",
+    2: "A detailed one line drawing of",
+    3: "A colorless oil painting of",
+    4: "A detailed van gogh painting of",
+    5: "A detailed colorful picasso painting of",
+    6: "Detailed colorful banksy street art of"
+    7: "A detailed colorful Haruki Murakami painting of",
+    8: "A detailed colorful MC Escher painting of"
+    9: "A detailed colorful Dali painting of"
+}
+
 def dalle_req(prompt):
     response = openai.Image.create(
         prompt=prompt,

@@ -1,5 +1,5 @@
 from app import db, User, StudySession, Topic, Question
-
+from sqlalchemy import func
 
 class Datalayer:
 

@@ -139,9 +139,12 @@ def answer_question():
     return jsonify(to_ret)
 
 #post the user's pics
-@app.route('/view_pictures', methods = ["GET"]) #assuming userid = 1
-def view_pictures():
-    return jsonify({"url": dalle_req("pretty flamingo")})
+@app.route('/view_pictures/<detail_level>', methods = ["POST"]) #assuming userid = 1
+def view_pictures(detail_level):
+    detail_level = int(detail_level)
+    info = request.json
+    session_name = info["session_name"]
+    return jsonify({"url": dalle_req(session_name, detail_level)})
 
 
 

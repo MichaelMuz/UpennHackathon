@@ -77,15 +77,18 @@ def edit_study_session(): #POST session changes
 #will get a question
 @app.route('/ask_question/<session_name>', methods = ["GET"])
 def ask_question(session_name):
+    user_id = 1
     question_to_ask = None
     topic_not_question = True
     if(random.randint(0, 1) == 0):
         topic_not_question = False
 
     if(topic_not_question):
-        question_to_ask = Datalayer.get_random_topic(session_name)
+
+        topic_to_ask = Datalayer.get_random_topic(user_id, session_name)
+        question_to_ask = gpt_req(f"Ask me a question about {topic_to_ask}")
     else:
-        question_to_ask = Datalayer.get_random_question(session_name)
+        question_to_ask = Datalayer.get_random_question(user_id, session_name)
         
         
     to_ret = {

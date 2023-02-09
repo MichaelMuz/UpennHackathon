@@ -73,23 +73,13 @@ class Datalayer:
         
 
 
-    def get_random_question(session_name):
+    def get_random_question(user_id, session_name):
         session_id = db.session.query(StudySession).filter_by(user_id=user_id).first().id
-        return db.session.query(Question).filter_by(session_id=session_id).options(load_only('id')).offset(
-            func.floor(
-                func.random() *
-                db.session.query(func.count(model_name.id))
-            )
-        ).limit(1).all().question
+        return db.session.query(Question).filter_by(study_session_id=session_id).order_by(func.random()).first().question
 
-    def get_random_topic(session_name):
+    def get_random_topic(user_id, session_name):
         session_id = db.session.query(StudySession).filter_by(user_id=user_id).first().id
-        return db.session.query(Topic).filter_by(session_id=session_id).options(load_only('id')).offset(
-            func.floor(
-                func.random() *
-                db.session.query(func.count(model_name.id))
-            )
-        ).limit(1).all().topic
+        return db.session.query(Topic).filter_by(study_session_id=session_id).order_by(func.random()).first().topic
 
         
         

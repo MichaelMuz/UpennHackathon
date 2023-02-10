@@ -139,9 +139,8 @@ def answer_question():
     return jsonify(to_ret)
 
 #post the user's pics
-@app.route('/view_pictures/', methods = ["POST"]) #assuming userid = 1
+@app.route('/view_pictures', methods = ["POST"]) #assuming userid = 1
 def view_pictures():
-    
     info = request.json
     session_name = info["session_name"]
     detail_level = int(info["detail"])

@@ -102,30 +102,33 @@ def ask_question(session_name):
 #post the user's answers and receive the answer
 @app.route('/answer_question', methods = ["POST"])
 def answer_question():
-    question = request.form["question"]
-    answer = request.form["answer"]
-    print(f"in check answer {question_id=}, {question=}, {answer=}")
+    user_id = 1
+    info = request.json
+    session_name = info["session_name"]
+    question = info["question"]
+    answer = info["answer"]
+    
+    print(f"checking correctness with: user's {answer=}, {question=}, {session_name=}")
+
     is_correct = False
-    true_answer = ''
-    #if question_id is -1 then the question was generated from a topic
-    if(question_id == -1):
+    true_answer = Datalayer.get_question_answer(user_id, session_name, question)
+    #if tru_answer is None then the question was generated from a topic
+    if(true_answer == None):
         gpt_eval = gpt_req(f'On a quiz I ask someone the question "{question}" and they answer "{answer}". Are they correct? Answer in a single word yes or no only.').lower()
-        true_answer = gpt_req(f'how would you answer the question: "{question}"?')
+        
         if("yes" in gpt_eval):
             is_correct = True
-        elif("no" in gpt_eval):
-            is_correct = False
         else:
-            raise Exception(f"GPT responded with {gpt_eval} instead of yes or no")
+            is_correct = False
+        true_answer = gpt_req(f'how would you answer the question: "{question}"?')
+    
     else:
-        true_answer = Datalayer.get_question_by_id(question_id)[1]
         gpt_eval = gpt_req(f'On a quiz I ask someone the question "{question}" and the True answer is {true_answer}. They answer with: "{answer}". Are they correct? Answer in a single word yes or no only.').lower()
         if("yes" in gpt_eval):
             is_correct = True
-        elif("no" in gpt_eval):
-            is_correct = False
         else:
-            raise Exception(f"GPT responded with {gpt_eval} instead of yes or no")
+            is_correct = False
+        
         
     print(f"checking correctness with: {true_answer=}, user's {answer=}, {question=}, {is_correct=}")
     to_ret = {
@@ -136,6 +139,7 @@ def answer_question():
         
     }
     return jsonify(to_ret)
+    
 
 #post the user's pics
 @app.route('/view_pictures', methods = ["POST"]) #assuming userid = 1

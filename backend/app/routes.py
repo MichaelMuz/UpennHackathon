@@ -103,9 +103,13 @@ def ask_question(session_name):
 @app.route('/answer_question', methods = ["POST"])
 def answer_question():
     user_id = 1
-    session_name = request.form["session_name"]
-    question = request.form["question"]
-    answer = request.form["answer"]
+    info = request.json
+    session_name = info["session_name"]
+    question = info["question"]
+    answer = info["answer"]
+    
+    print(f"checking correctness with: user's {answer=}, {question=}, {session_name=}")
+
     is_correct = False
     true_answer = Datalayer.get_question_answer(user_id, session_name, question)
     #if tru_answer is None then the question was generated from a topic

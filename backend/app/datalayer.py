@@ -67,7 +67,13 @@ class Datalayer:
             db.session.delete(topic_query)
         db.session.commit()
         
-
+    def get_question_answer(user_id, session_name, question_str):
+        session_id = Datalayer.get_session_id(user_id, session_name)
+        question = db.session.query(Topic).filter_by(study_session_id=session_id, question=question_str).first()
+        if(question == None):
+            return None
+        else:
+            return question.answer
 
         
         

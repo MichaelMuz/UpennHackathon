@@ -41,7 +41,7 @@ class Datalayer:
         db.session.commit()
     
     def create_session(user_id, session_name):
-        new_session = StudySession(name=session_name, user_id=user_id)
+        new_session = StudySession(name=session_name, user_id=user_id, detail_level=5)
         db.session.add(new_session)
         db.session.commit()
         return new_session.id
@@ -75,6 +75,19 @@ class Datalayer:
         else:
             return question.answer
 
+    def get_detail_of_session(session_id):
+        return db.session.query(StudySession).filter_by(id=session_id).first().detail_level
+
+    def increment_detail(session_id):
+        session = db.session.query(StudySession).filter_by(id=session_id).first()
+        if(session.detail_level < 9):
+            session.detail_level += 1
+
+    def decriment_detail(session_id):
+        session = db.session.query(StudySession).filter_by(id=session_id).first()
+        if(session.detail_level > 1):
+            session.detail_level -= 1
+            
         
         
 

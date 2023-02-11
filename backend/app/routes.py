@@ -128,9 +128,16 @@ def answer_question():
             is_correct = True
         else:
             is_correct = False
+
+    session_id = Datalayer.get_session_id(user_id, session_name)
+    if(is_correct):
+        Datalayer.increment_detail(session_id)
+    else:
+        Datalayer.decriment_detail(session_id)
         
         
     print(f"checking correctness with: {true_answer=}, user's {answer=}, {question=}, {is_correct=}")
+
     to_ret = {
         "question": question,
         "user_answer": answer,
@@ -146,7 +153,8 @@ def answer_question():
 def view_pictures():
     info = request.json
     session_name = info["session_name"]
-    detail_level = int(info["detail"])
+    session_id = Datalayer.get_session_id(user_id, session_name)
+    detail_level = Datalayer.get_detail_of_session(session_id)
     return jsonify({"url": dalle_req(session_name, detail_level)})
 
 

@@ -24,6 +24,7 @@ class StudySession(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
     topics = db.relationship('Topic', backref='StudySession', lazy=True)
     questions = db.relationship('Question', backref='StudySession', lazy=True)
+    detail_level = db.Column(db.Integer)
 
 
 class Topic(db.Model):

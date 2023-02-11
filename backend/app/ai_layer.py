@@ -9,7 +9,7 @@ def gpt_req(prompt, be_determinist):
     response = openai.Completion.create(
         engine="text-davinci-003",
         prompt=prompt,
-        max_tokens=20,
+        max_tokens=2048,
         temperature=temp,
         top_p=1,
         frequency_penalty=0,

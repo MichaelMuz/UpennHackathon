@@ -87,7 +87,7 @@ def ask_question(session_name):
     if(topic_not_question):
 
         topic_to_ask = Datalayer.get_random_topic(user_id, session_name)
-        question_to_ask = gpt_req(f"Ask me a question about {topic_to_ask}")
+        question_to_ask = gpt_req(f"Ask me a question about {topic_to_ask}", False)
     else:
         question_to_ask = Datalayer.get_random_question(user_id, session_name)
         
@@ -114,16 +114,16 @@ def answer_question():
     true_answer = Datalayer.get_question_answer(user_id, session_name, question)
     #if tru_answer is None then the question was generated from a topic
     if(true_answer == None):
-        gpt_eval = gpt_req(f'On a quiz I ask someone the question "{question}" and they answer "{answer}". Are they correct? Answer in a single word yes or no only.').lower()
+        gpt_eval = gpt_req(f'On a quiz I ask someone the question "{question}" and they answer "{answer}". Are they correct? Answer in a single word yes or no only.', True).lower()
         
         if("yes" in gpt_eval):
             is_correct = True
         else:
             is_correct = False
-        true_answer = gpt_req(f'how would you answer the question: "{question}"?')
+        true_answer = gpt_req(f'how would you answer the question: "{question}"? Make sure you answer in no more than 50 words.', True)
     
     else:
-        gpt_eval = gpt_req(f'On a quiz I ask someone the question "{question}" and the True answer is {true_answer}. They answer with: "{answer}". Are they correct? Answer in a single word yes or no only.').lower()
+        gpt_eval = gpt_req(f'On a quiz I ask someone the question "{question}" and the True answer is {true_answer}. They answer with: "{answer}". Are they correct? Answer in a single word yes or no only.', True).lower()
         if("yes" in gpt_eval):
             is_correct = True
         else:

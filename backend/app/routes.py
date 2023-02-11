@@ -151,6 +151,7 @@ def answer_question():
 #post the user's pics
 @app.route('/view_pictures', methods = ["POST"]) #assuming userid = 1
 def view_pictures():
+    user_id = 1
     info = request.json
     session_name = info["session_name"]
     session_id = Datalayer.get_session_id(user_id, session_name)

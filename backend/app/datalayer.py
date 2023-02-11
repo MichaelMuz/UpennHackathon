@@ -80,13 +80,18 @@ class Datalayer:
 
     def increment_detail(session_id):
         session = db.session.query(StudySession).filter_by(id=session_id).first()
+        
         if(session.detail_level < 9):
-            session.detail_level += 1
+            session.detail_level = session.detail_level + 1
+        db.session.commit()
+
 
     def decriment_detail(session_id):
         session = db.session.query(StudySession).filter_by(id=session_id).first()
         if(session.detail_level > 1):
-            session.detail_level -= 1
+            session.detail_level = session.detail_level - 1
+        db.session.commit()
+
             
         
         
